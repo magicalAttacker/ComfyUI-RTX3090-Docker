@@ -1,0 +1,29 @@
+
+services:
+  comfyui:
+    image: ghcr.io/magicalAttacker/comfyui-rtx3090-docker:latest
+    container_name: comfyui-rtx3090
+    restart: unless-stopped
+
+    ports:
+      - "8188:8188"
+
+    volumes:
+      - ./models:/workspace/models
+      - ./output:/workspace/output
+      - ./input:/workspace/input
+      - ./custom_nodes:/workspace/custom_nodes
+
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    command: []
